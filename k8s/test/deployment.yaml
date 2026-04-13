@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  namespace: default
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+      - name: test
+        image: ghcr.io/capta1nbee/test-p/test_202604131027:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: 
+        env:
+        - name: test
+          value: "test"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        volumeMounts:
+        - name: test
+          mountPath: /data/test
+        - name: sec
+          mountPath: /data/sec
+      volumes:
+      - name: test
+        configMap:
+          name: cm
+      - name: sec
+        secret:
+          secretName: sec
