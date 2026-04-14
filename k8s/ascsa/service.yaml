@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ascsa
+  namespace: default
+spec:
+  type: ClusterIP
+  selector:
+    app: ascsa
+  ports:
+  - name: 
+    port: 80
+    targetPort: 80

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ascsa
+  namespace: default
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: ascsa
+  template:
+    metadata:
+      labels:
+        app: ascsa
+    spec:
+      containers:
+      - name: ascsa
+        image: ghcr.io/capta1nbee/test-p/ascsa_202604141044:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: 
+        env:
+        - name: aa
+          value: "aaa"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        volumeMounts:
+        - name: aa
+          mountPath: /data/aa
+        - name: sac
+          mountPath: /data/sac
+      volumes:
+      - name: aa
+        configMap:
+          name: cmx
+      - name: sac
+        secret:
+          secretName: scx
